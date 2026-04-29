@@ -4,27 +4,29 @@ from telegram.ext import (
     ApplicationBuilder,
     ContextTypes,
     MessageHandler,
-    filters
+    filters,
 )
 
-# Get token from environment variable
+# Get token safely
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+if not BOT_TOKEN:
+    raise ValueError("BOT_TOKEN environment variable not set!")
 
 WELCOME_TEXT = """
 👋 Welcome {name}!
 
-Glad to have you in our group 😊
-Please read the group rules.
+Glad to have you here 😊
+Please follow the group rules.
 """
 
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.message.new_chat_members:
-        for member in update.message.new_chat_members:
-            name = member.full_name
+    for member in update.message.new_chat_members:
+        name = member.full_name
 
-            text = WELCOME_TEXT.format(name=name)
-
-            await update.message.reply_text(text)
+        await update.message.reply_text(
+            WELCOME_TEXT.format(name=name)
+        )
 
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -36,7 +38,7 @@ def main():
         )
     )
 
-    print("Bot started...")
+    print("Bot started successfully...")
 
     app.run_polling()
 
