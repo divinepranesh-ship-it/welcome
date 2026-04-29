@@ -1,35 +1,34 @@
-import os
 from telegram import Update
 from telegram.ext import (
     Application,
     MessageHandler,
     ContextTypes,
-    filters
+    filters,
 )
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+# 🔑 Put your bot token here
+BOT_TOKEN = "8629478489:AAE0UWX2WAZXQmjA6Q8AOEPL7J8GivZOlLc"
 
-if not BOT_TOKEN:
-    raise RuntimeError("BOT_TOKEN not set!")
 
-WELCOME_TEXT = """
-👋 Welcome {name}!
-
-Glad to have you here 😊
-Please follow the group rules.
-"""
-
+# Welcome function
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    for member in update.message.new_chat_members:
-        name = member.full_name
+    if update.message and update.message.new_chat_members:
+        for member in update.message.new_chat_members:
+            name = member.full_name
 
-        await update.message.reply_text(
-            WELCOME_TEXT.format(name=name)
-        )
+            welcome_text = (
+                f"👋 Welcome {name}!\n\n"
+                "🎉 Glad to have you in the group.\n"
+                "📌 Please read the group rules!"
+            )
+
+            await update.message.reply_text(welcome_text)
+
 
 def main():
     app = Application.builder().token(BOT_TOKEN).build()
 
+    # Trigger when someone joins
     app.add_handler(
         MessageHandler(
             filters.StatusUpdate.NEW_CHAT_MEMBERS,
@@ -37,9 +36,9 @@ def main():
         )
     )
 
-    print("Bot running successfully...")
-
+    print("🤖 Bot started successfully...")
     app.run_polling()
+
 
 if __name__ == "__main__":
     main()
