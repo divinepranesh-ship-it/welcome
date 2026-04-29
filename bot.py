@@ -17,9 +17,21 @@ async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
             name = member.full_name
 
             welcome_text = (
-                f"👋 Welcome {name}!\n\n"
-                "🎉 Glad to have you in the group.\n"
-                "📌 Please read the group rules!"
+                f"🌟 Welcome {name}!\n\n"
+
+                "Tamil Friendship Group ✨ Tamil Chatting Group 💗💗 தமிழ்\n\n"
+
+                "Thanks for joining our group 🙌\n\n"
+
+                "📌 Please follow group rules:\n"
+                "• Respect everyone\n"
+                "• No spam or ads\n"
+                "• Stay active and friendly\n\n"
+
+                "🛡 Safety Reminder:\n"
+                "Do not share your phone number, photo, location with anyone. ⚠️\n\n"
+
+                "Enjoy and stay safe! 😊"
             )
 
             await update.message.reply_text(welcome_text)
