@@ -1,23 +1,23 @@
 import os
+import asyncio
 from telegram import Update
 from telegram.ext import (
-    ApplicationBuilder,
-    ContextTypes,
+    Application,
     MessageHandler,
-    filters,
+    ContextTypes,
+    filters
 )
 
-# Get token safely
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 if not BOT_TOKEN:
-    raise ValueError("BOT_TOKEN environment variable not set!")
+    raise RuntimeError("BOT_TOKEN not found!")
 
 WELCOME_TEXT = """
 👋 Welcome {name}!
 
 Glad to have you here 😊
-Please follow the group rules.
+Please follow group rules.
 """
 
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -28,8 +28,8 @@ async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
             WELCOME_TEXT.format(name=name)
         )
 
-def main():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+async def main():
+    app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(
         MessageHandler(
@@ -38,9 +38,15 @@ def main():
         )
     )
 
-    print("Bot started successfully...")
+    print("Bot running successfully...")
 
-    app.run_polling()
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    # Keep bot running
+    while True:
+        await asyncio.sleep(100)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
