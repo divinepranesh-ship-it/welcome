@@ -1,5 +1,4 @@
 import os
-import asyncio
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -11,13 +10,13 @@ from telegram.ext import (
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 if not BOT_TOKEN:
-    raise RuntimeError("BOT_TOKEN not found!")
+    raise RuntimeError("BOT_TOKEN not set!")
 
 WELCOME_TEXT = """
 👋 Welcome {name}!
 
 Glad to have you here 😊
-Please follow group rules.
+Please follow the group rules.
 """
 
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -28,7 +27,7 @@ async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
             WELCOME_TEXT.format(name=name)
         )
 
-async def main():
+def main():
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(
@@ -40,13 +39,7 @@ async def main():
 
     print("Bot running successfully...")
 
-    await app.initialize()
-    await app.start()
-    await app.updater.start_polling()
-
-    # Keep bot running
-    while True:
-        await asyncio.sleep(100)
+    app.run_polling()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
