@@ -6,11 +6,29 @@ from telegram.ext import (
     filters,
 )
 
-# 🔑 Put your bot token here
+from flask import Flask
+from threading import Thread
+
+# 🔑 NEW TOKEN HERE
 BOT_TOKEN = "8629478489:AAE0UWX2WAZXQmjA6Q8AOEPL7J8GivZOlLc"
 
 
-# Welcome function
+# 🌐 Keep-alive web server (for Replit)
+app_web = Flask('')
+
+@app_web.route('/')
+def home():
+    return "Bot is running!"
+
+def run():
+    app_web.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
+
+# 🤖 Welcome function
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message and update.message.new_chat_members:
         for member in update.message.new_chat_members:
@@ -38,9 +56,10 @@ async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
+    keep_alive()  # 🔥 keeps Replit alive
+
     app = Application.builder().token(BOT_TOKEN).build()
 
-    # Trigger when someone joins
     app.add_handler(
         MessageHandler(
             filters.StatusUpdate.NEW_CHAT_MEMBERS,
