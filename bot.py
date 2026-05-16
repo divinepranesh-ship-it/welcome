@@ -7,7 +7,7 @@ from telegram.ext import (
 )
 
 # 🔑 Your Bot Token
-BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
+BOT_TOKEN = "8629478489:AAEqCCZVwwVuoDp833ach1cfL56Alirdsdc"
 
 
 # 🤖 Welcome Function
