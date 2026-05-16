@@ -6,38 +6,23 @@ from telegram.ext import (
     filters,
 )
 
-from flask import Flask
-from threading import Thread
-
-# 🔑 NEW TOKEN HERE
-BOT_TOKEN = "8629478489:AAE0UWX2WAZXQmjA6Q8AOEPL7J8GivZOlLc"
+# 🔑 Your Bot Token
+BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 
 
-# 🌐 Keep-alive web server (for Replit)
-app_web = Flask('')
-
-@app_web.route('/')
-def home():
-    return "Bot is running!"
-
-def run():
-    app_web.run(host='0.0.0.0', port=8080)
-
-def keep_alive():
-    t = Thread(target=run)
-    t.start()
-
-
-# 🤖 Welcome function
+# 🤖 Welcome Function
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     if update.message and update.message.new_chat_members:
+
         for member in update.message.new_chat_members:
+
             name = member.full_name
 
             welcome_text = (
                 f"🌟 Welcome {name}!\n\n"
 
-                "Tamil Friendship Group ✨ Tamil Chatting Group 💗💗 தமிழ்\n\n"
+                "Tamil Friendship Group ✨ தமிழ் Chat Group 💗\n\n"
 
                 "Thanks for joining our group 🙌\n\n"
 
@@ -47,16 +32,15 @@ async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "• Stay active and friendly\n\n"
 
                 "🛡 Safety Reminder:\n"
-                "Do not share your phone number, photo, location with anyone. ⚠️\n\n"
+                "Do not share your phone number, photo, or location with strangers ⚠️\n\n"
 
-                "Enjoy and stay safe! 😊"
+                "Enjoy and stay safe 😊"
             )
 
             await update.message.reply_text(welcome_text)
 
 
 def main():
-    keep_alive()  # 🔥 keeps Replit alive
 
     app = Application.builder().token(BOT_TOKEN).build()
 
@@ -67,7 +51,8 @@ def main():
         )
     )
 
-    print("🤖 Bot started successfully...")
+    print("🤖 Bot Started Successfully...")
+
     app.run_polling()
 
 
